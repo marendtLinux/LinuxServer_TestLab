@@ -74,7 +74,7 @@ The follwing command should work:
 ssh adm1n68545@[IP-adress server]
 ```
 
-**Note:**Only now you should close the second shell.
+**Note:** Only now you should close the second shell.
 
 
 

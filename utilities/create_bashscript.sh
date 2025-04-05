@@ -3,8 +3,9 @@
 # ===============================
 #  name: create_bashscript.sh
 #
-#  Description: a bashscript-template
+#  description: a bashscript-template
 #
+#  tested under: list os-versions and specific software versions
 # ===============================
 
 
