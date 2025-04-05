@@ -5,7 +5,7 @@ The direct root login via SSH represents a significant security risk. If this is
 ## Instructions for deactivating
 ### 1. create a new user
 
-### ATTENTION: creating a username that is easy to guess is not recommended. If an SSH key falls into the wrong hands and the root login does not work, the user name must be guessed. A simple name such as user1, admin1 etc. is therefore a security risk. Choose a harder to guess name like: adm1n68545
+**ATTENTION:** creating a username that is easy to guess is not recommended. If an SSH key falls into the wrong hands and the root login does not work, the user name must be guessed. A simple name such as user1, admin1 etc. is therefore a security risk. Choose a harder to guess name like: adm1n68545
 
 Creating a new user, e.g.  `adm1n68545`.
 
@@ -20,6 +20,11 @@ Allow `adm1n68545` to execute root commands with `sudo`. To do this, `adm1n68545
 # All adm1n68545 adm1n68545 all sudo privileges
 adm1n68545 ALL=(ALL) ALL
 ```
+
+**ATTENTION:** Before altering the ssh-server configs, you should open
+up a second, stable shell to the server. Otherwise, you can lock yourself
+out of the system.
+
 
 ### 3. Configure SSH server
 Edit the file `/etc/ssh/sshd_config` to allow the ssh login for `adm1n68545`:
@@ -55,5 +60,21 @@ The SSH server is then restarted to apply the changes:
 ```bash
 sudo systemctl restart ssh
 ```
+
+### 6. Verify changes
+
+The following command should fail:
+
+```bash
+ssh root@[IP-adress server]
+```
+The follwing command should work:
+
+```bash
+ssh adm1n68545@[IP-adress server]
+```
+
+**Note:**Only now you should close the second shell.
+
 
 
