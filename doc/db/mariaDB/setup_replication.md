@@ -5,7 +5,7 @@ master-server: Ubuntu 24.04.2 LTS
 replica-server: Debian GNU/Linux 12 (bookworm)
 ```
 
-##Introduction
+## Introduction
 A database that mirrors a primary database is called the replica. Changes on the master are applied to the replica without much delay. A replica can be used to  create a backup. 
 This has the advantage, that the primary database is not slowed down. 
 
@@ -39,19 +39,19 @@ log-basename=master1
 binlog-format=mixed
 ```
 
-###restart mariadb to apply changes
+### restart mariadb to apply changes
 ```bash
 systemctl restart mariadb
 ```
 
-###lock the tables
+### lock the tables
 
 ~~~~sql
 MariaDB [(none)]>  FLUSH TABLES WITH READ LOCK;
 ~~~~
 
 
-###show the positon of the current binary-log status
+### show the positon of the current binary-log status
 
 ~~~~sql
 MariaDB [(none)]>  SHOW MASTER STATUS;
@@ -71,7 +71,7 @@ MariaDB [(none)]> SHOW MASTER STATUS;
 
 
 
-###install mariadb-backup for transfering the database
+### install mariadb-backup for transfering the database
 ```bash
 sudo apt-get install mariadb-backup
 ```
@@ -102,7 +102,7 @@ rsync -avP /var/mariadb/backup ServerReplica:/var/mariadb/backup
 
 ## 2. Setup replication on the replica-server
 
-###install mariadb-backup on the replica
+### install mariadb-backup on the replica
 ```bash
 sudo apt-get install mariadb-backup
 ```
@@ -120,17 +120,17 @@ mariabackup --copy-back \
 
 ```
 
-###change ownership, if necessary
+### change ownership, if necessary
 ```bash
 chown -R mysql:mysql /var/lib/mysql/
 ```
 
-###reset slave on slave-server, otherwise next command can raise an error
+### reset slave on slave-server, otherwise next command can raise an error
 ```bash
 MariaDB [(none)]> RESET SLAVE;
 ```
 
-###apply master settings on slave server
+### apply master settings on slave server
 ~~~~sql
 MariaDB [(none)]> 
 CHANGE MASTER TO
@@ -143,12 +143,12 @@ CHANGE MASTER TO
   MASTER_CONNECT_RETRY=10;
 ~~~~
   
-###start the slave  
+### start the slave  
 ```bash
 MariaDB [(none)]> START SLAVE;
 ```
 
-###show slave status 
+### show slave status 
 **Note:** next command shows a long status list, there should not be any errors. Further it is recommended to monitor both databases or trigger a database change on master and check, if the change was immediately applied on the slave  
 
 ~~~~sql
