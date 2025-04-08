@@ -11,7 +11,6 @@
 
 #list of hosts, format user@ip-adress
 HOSTLIST="hostlist.txt"
-#HOSTLIST="hostlist.txt"
 
 #directory, where the script on server is executed
 DIR="/var/tmp/"
