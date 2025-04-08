@@ -14,9 +14,17 @@
 # uncomment next line for debugging
 #set -x #tracing-option
 
+if [ -z $1 ]
+then
+	echo "please provide the number of maximal retries for fail2ban as the first parameter"
+	exit 1
+fi
+
+MAX_RETRY=$1
+
 
 #if fail2ban is not installed, install it
-if apt list --installed | grep fail2ban || [ -d /etc/fail2ban ]
+if apt list --installed 2> /dev/null | grep fail2ban || [ -d /etc/fail2ban ] 2> /dev/null
 then
 	echo "fail2ban is already installed, proceed..."
 	
@@ -70,8 +78,8 @@ printf "
 enabled = true
 port    = ssh
 filter  = sshd
-logpath = /var/log/fail2ban.log
-maxretry = 3
+logpath = /var/log/auth.log
+maxretry = $MAX_RETRY
 action  = iptables[name=sshd, port=ssh]
 bantime  = 3m " >> jail.local
 
@@ -80,9 +88,6 @@ then
 	echo "config was successfully written to jail.local"
 fi
 
-#create log-file manually, otherwise fail2ban complains
-touch /var/log/fail2ban.log
-
 #enable service
 systemctl enable fail2ban
 
@@ -90,7 +95,7 @@ systemctl enable fail2ban
 systemctl restart fail2ban
 
 #check exit status of status
-if systemctl status --no-pager fail2ban
+if systemctl status --no-pager fail2ban &> /dev/null
 then
 	echo "fail2ban status okay"
 	exit 0

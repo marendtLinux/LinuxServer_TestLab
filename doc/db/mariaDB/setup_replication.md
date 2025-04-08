@@ -77,7 +77,7 @@ sudo apt-get install mariadb-backup
 ```
 
 
-## create the backup for the slave and prepare the dataset
+### create the backup for the slave and prepare the dataset
 
 ```bash
 mariadb-backup --backup \
@@ -89,13 +89,13 @@ mariadb-backup --prepare \
 
 ```
 
-## the database on the master can already be unlocked again
+### the database on the master can already be unlocked again
 
 ~~~~sql
 MariaDB [(none)]> UNLOCK TABLES;
 ~~~~
 
-###transfer Backup to the replica-server
+### transfer Backup to the replica-server
 ```bash
 rsync -avP /var/mariadb/backup ServerReplica:/var/mariadb/backup
 ```
