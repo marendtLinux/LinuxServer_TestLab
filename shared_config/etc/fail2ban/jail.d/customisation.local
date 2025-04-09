@@ -1,0 +1,9 @@
+[sshd]
+enabled = true
+port    = ssh
+filter  = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+action  = iptables[name=sshd, port=ssh]
+bantime  = 3m
+
