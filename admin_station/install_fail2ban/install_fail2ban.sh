@@ -22,9 +22,10 @@ fi
 
 MAX_RETRY=$1
 
+CONFIG_FILE="/etc/fail2ban/jail.d/customisation.local"
 
 #if fail2ban is not installed, install it
-if apt list --installed 2> /dev/null | grep fail2ban || [ -d /etc/fail2ban ] 2> /dev/null
+if apt list --installed &> /dev/null | grep fail2ban &> /dev/null || [ -d /etc/fail2ban ] 2> /dev/null
 then
 	echo "fail2ban is already installed, proceed..."
 	
@@ -46,32 +47,31 @@ fi
 cd /etc/fail2ban
 
 
-#if the file jail.local doesnt exists already
-if [ ! -e "jail.local" ]
+#if the CONFIG_FILE doesnt exists already
+if [ ! -e $CONFIG_FILE ]
 then
-	#if jail.local doesnt exists, create it, by copying jail.conf
-	#all configs should be made to jail.local because jail.conf can be overwritten
-	cp jail.conf jail.local
-	#check now, if jail.local was created
-	if [ $? -ne 0 ] || [ ! -e "jail.local" ]
+	#if CONFIG_FILE doesnt exists, create it
+	touch $CONFIG_FILE
+	#check now, if CONFIG_FILE was created
+	if [ $? -ne 0 ] || [ ! -e $CONFIG_FILE ]
 	then
-		echo "Error: jail.local could not be created"
+		echo "Error: $CONFIG_FILE could not be created"
 		exit 1
 	else
-		echo "jail.local was created"
+		echo "$CONFIG_FILE was created"
 	fi
 fi
 
 
 #check, if there is an sshd-configuration in jail.local already 
-if cat jail.local | grep "\[sshd\]"
+if cat $CONFIG_FILE | grep "\[sshd\]"  &> /dev/null
 then
 	echo "there is already an exisiting [sshd] configuration, exiting script"
 	exit 1
 fi
 
 
-#append sshd-config to jail.local file
+#append sshd-config to CONFIG_FILE
 printf "
 
 [sshd]
@@ -81,11 +81,11 @@ filter  = sshd
 logpath = /var/log/auth.log
 maxretry = $MAX_RETRY
 action  = iptables[name=sshd, port=ssh]
-bantime  = 3m " >> jail.local
+bantime  = 3m " >> $CONFIG_FILE
 
 if [ $? -eq 0 ]
 then
-	echo "config was successfully written to jail.local"
+	echo "config was successfully written to $CONFIG_FILE"
 fi
 
 #enable service
@@ -105,4 +105,4 @@ else
 fi
 
 
-
+exit 0

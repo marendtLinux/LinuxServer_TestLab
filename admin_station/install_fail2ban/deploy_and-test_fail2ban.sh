@@ -35,14 +35,22 @@ do
     ip=$( printf $HOST | cut -d "@" -f 2 )
 
     #copy installation script to server
-    scp "$INSTALLATION_SCRIPT" "$HOST:$DIR"
+    scp "$INSTALLATION_SCRIPT" "$HOST:$DIR" &> /dev/null
     #execute installation script on server
     ssh $HOST "cd $DIR ; sudo -S ./$INSTALLATION_SCRIPT $MAX_RETRY"
+    
+    #if installation was not successful, remuse with next host
+    if [ $? -ne 0 ]
+    then
+    	printf "the installation of fail2ban was not successful, resume with next host...\n"
+    	continue
+    fi
+    
     
     #now do invalid ssh-login attempts to trigger ban
     for (( var=0 ; var < $MAX_RETRY ; var++ ))
     do
-    	printf "\nDo a invalid ssh login attempt:\n"
+    	printf "\nDo an invalid ssh login attempt:\n"
 	#invalid ssh login attempt
 	ssh invaliduser123@$ip
 	#sleep command is important here, otherwise connection could fail simply because too many requests too fast
@@ -58,8 +66,8 @@ do
     #test now, if the ssh attempt with valid credentials was refused
     if [ $? -ne 0 ]
     then
-    	printf "\nThe fail2ban test was successful for $HOST .\n" \
-    	"You are now banned from the server for the duration that was  set in $INSTALLATION_SCRIPT\n"
+    	printf "\nThe fail2ban test was successful for $HOST .\n"
+    	printf "This Client is now banned from the server for the duration that was set in $INSTALLATION_SCRIPT\n"
     else
     	printf "\nWARNING: The fail2ban test was  NOT successful for $HOST. Please check manually for errors\n\n"
     fi
