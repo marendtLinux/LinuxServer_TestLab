@@ -14,6 +14,8 @@
 # uncomment next line for debugging
 #set -x #tracing-option
 
+
+#check, if a parameter for the number of max retries was provided
 if [ -z $1 ]
 then
 	echo "please provide the number of maximal retries for fail2ban as the first parameter"
