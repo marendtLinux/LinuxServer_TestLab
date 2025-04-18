@@ -12,7 +12,7 @@
 if [ -z "$1" ]  # if scriptname wasnt submitted, exit
 then
 	echo "Error: please provide a scriptname as first argument"
-	exit 1 
+	exit 1 öö¼
 elif [ -e "$1" ] #if file already exists, exit
 then
 	echo "Error: a file with the name $1 already exits"

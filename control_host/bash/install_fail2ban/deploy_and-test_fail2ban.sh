@@ -27,6 +27,9 @@ INSTALLATION_SCRIPT="install_fail2ban.sh"
 #Number of max retries, before the ban is activated
 MAX_RETRY=3
 
+#self-delete option for installation-script
+SELF_DELETE_OPTION="--selfdelete"
+
 if [ ! -e $HOSTLIST ]
 then
 	echo "a hostlist doenst exists"
@@ -43,7 +46,7 @@ do
     #copy installation script to server
     scp "$INSTALLATION_SCRIPT" "$HOST:$DIR" &> /dev/null
     #execute installation script on server
-    ssh $HOST "cd $DIR ; sudo -S ./$INSTALLATION_SCRIPT $MAX_RETRY"
+    ssh $HOST "cd $DIR ; sudo -S ./$INSTALLATION_SCRIPT $MAX_RETRY $SELF_DELETE_OPTION"
     
     #if installation was not successful, remuse with next host
     if [ $? -ne 0 ]
