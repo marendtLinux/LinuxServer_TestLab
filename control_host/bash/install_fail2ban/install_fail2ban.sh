@@ -112,7 +112,6 @@ fi
 
 #append sshd-config to CONFIG_FILE
 printf "
-
 [sshd]
 enabled = true
 port    = ssh

@@ -1,0 +1,41 @@
+---
+- name: install fail2ban
+  hosts: backup_server
+
+  tasks:
+    - name: Update package index
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install fail2ban package
+      apt:
+        name: fail2ban
+
+    - name: Start service and enable start on boot
+      service:
+        name: fail2ban
+        state: started
+        enabled: true
+
+    - name: Upload config file
+      copy:   
+        dest: /etc/fail2ban/jail.d/customisation.local
+        content: |
+          [sshd]
+          enabled = true
+          port    = ssh
+          filter  = sshd
+          logpath = /var/log/auth.log
+          maxretry = 3
+          action  = iptables[name=sshd, port=ssh]
+          bantime  = 3m
+      notify: reload fail2ban
+
+
+  handlers:
+    - name: Reload fail2ban
+      service:
+        name: fail2ban
+        state: reloaded
+      listen: reload fail2ban
