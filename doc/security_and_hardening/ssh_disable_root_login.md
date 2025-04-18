@@ -14,18 +14,16 @@ sudo adduser adm1n68545
 ```
 
 ### 2. Set authorizations for `adm1n68545`
+
+**ATTENTION:** You should only use the command visudo to make changes to /etc/sudoers. It is further recommended to open
+up a second, stable shell to the server to reverse changes that broke sudoers-syntax. Otherwise to can lock yourself out of the system.
+
 Allow `adm1n68545` to execute root commands with `sudo`. To do this, `adm1n68545` can be added to the `sudo` group or entered in the `/etc/sudoers` file:
 
 ```bash
 # All adm1n68545 adm1n68545 all sudo privileges
 adm1n68545 ALL=(ALL) ALL
 ```
-
-**ATTENTION:** Before altering the ssh-server configs, you should open
-up a second, stable shell to the server. Otherwise, you can lock yourself
-out of the system.
-
-
 ### 3. Configure SSH server
 Edit the file `/etc/ssh/sshd_config` to allow the ssh login for `adm1n68545`:
 

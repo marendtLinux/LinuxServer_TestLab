@@ -4,7 +4,7 @@ Fail2ban is a useful tool for protecting a server against ssh-attacks. Fail2ban 
 do a number of failed ssh-login attempts.
 
 **Note:** You find a script that automatically deploys and tests fail2ban on a server  
-at admin_station/install_fail2ban/deploy_and-test_fail2ban.sh
+at (control_host/bash/install_fail2ban/deploy_and-test_fail2ban.sh)
 
 ## Installation and testing of fail2ban
 
