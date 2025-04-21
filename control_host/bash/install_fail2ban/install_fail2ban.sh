@@ -26,21 +26,23 @@ MAX_RETRY=0
 SELF_DELETE=FALSE
 SCRIPT_LOCATION=$(pwd)
 
+#functions that self-deletes this script, if SELF_DELETE as value "TRUE"
+#parameter $1: exit-status
 function exit_script () {
 	
 	EXIT_STATUS=$1
 	
-	#self-deletes this script
+	
 	if [ "$SELF_DELETE" = "TRUE" ]
 	then
 		cd $SCRIPT_LOCATION
+		#self-deletes this script
 		rm -- "$0"
 	fi
 	
+	#exit this script
 	exit $EXIT_STATUS	
 }
-
-
 
 #check, if a parameter for the number of max retries was provided
 if [ -z $1 ]
@@ -141,10 +143,5 @@ else
 	echo "fail2ban status NOT okay"
 	exit_script 1
 fi
-
-
-
-
-
 
 
