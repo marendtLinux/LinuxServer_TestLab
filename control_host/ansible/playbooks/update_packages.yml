@@ -1,0 +1,23 @@
+---
+- name: update packages
+  hosts: all
+
+  tasks:
+    - name: Update package index for Debianvfamily
+      apt:
+        update_cache: true
+      when: ansible_os_family == "Debian"
+
+
+    - name: Full upgrade for Debian family
+      apt:
+        upgrade: full
+      when: ansible_os_family == "Debian"
+    
+    
+    - name: Full upgrade for Rocky distro
+      dnf:
+        name: "*"
+        state: latest
+      when: ansible_distribution == "Rocky"
+
