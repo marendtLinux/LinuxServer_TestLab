@@ -2,6 +2,17 @@
 - name: install fail2ban
   hosts: all
 
+  vars_prompt: 
+    - name: maxretry
+      prompt: Please enter number of maximal retries before ban
+      default: 3
+      private: false
+      
+    - name: bantime
+      prompt: Please enter bantime in minutes
+      default: 3
+      private: false 
+
   tasks:
     - name: Update package index
       apt:
@@ -9,8 +20,14 @@
         cache_valid_time: 3600
       when: ansible_os_family == "Debian"
 
+      #fail2ban on Rocky is not in the standard packets included, Extra Packages for Enterprise Linux (EPEL) are needed
+    - name: Install epel-release for Rocky Linux
+      dnf:
+        name: epel-release
+      when: ansible_distribution == "Rocky"
+
     - name: Install fail2ban package
-      apt:
+      package:
         name: fail2ban
 
     - name: Start service and enable start on boot
@@ -28,9 +45,9 @@
           port    = ssh
           filter  = sshd
           logpath = /var/log/auth.log
-          maxretry = 3
+          maxretry = {{maxretry}}
           action  = iptables[name=sshd, port=ssh]
-          bantime  = 6m
+          bantime  = {{bantime}}m
       notify: reload fail2ban
 
 
