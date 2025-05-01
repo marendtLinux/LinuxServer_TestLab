@@ -1,0 +1,52 @@
+---
+- hosts: Server3Ubuntu
+
+  vars_prompt:
+    - name: mariadb_user_password
+      prompt: Please enter password for mariadb user testuser
+      default: 3
+      private: true
+
+    - name: mariadb_root_password
+      prompt: Please enter password for mariadb root user
+      default: 3
+      private: true
+
+  vars:
+    user: dockeradmin
+    dir_path: "~{{user}}/docker_test_ansible"
+
+  tasks:
+
+    - name: Create directory
+      file:
+        path: "{{dir_path}}"
+        state: directory
+        owner: "{{user}}"
+
+    - name: upload compose.yml
+      template:
+        src: compose.yml
+        dest: "{{dir_path}}/compose.yml"
+        owner: "{{user}}"
+
+    - name: create password file for env variable MARIADB_PASSWORD_FILE
+      copy:
+        content: "{{mariadb_user_password}}"
+        dest: "{{dir_path}}/password.txt"
+        owner: "{{user}}"
+        group: "{{user}}"
+        mode: '0600'
+
+    - name: create password file for env variable MARIADB_ROOT_PASSWORD_FILE
+      copy:
+        content: "{{mariadb_root_password}}"
+        dest: "{{dir_path}}/root_password.txt"
+        owner: "{{user}}"
+        group: "{{user}}"
+        mode: '0600'
+
+    - name: compose and start containers
+      community.docker.docker_compose_v2:
+        project_src: "{{dir_path}}"
+        state: present

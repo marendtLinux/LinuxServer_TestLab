@@ -1,0 +1,29 @@
+---
+# file compose.yaml
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-test
+    secrets:
+      - password
+      - root_password
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/root_password
+      MARIADB_DATABASE: test
+      MARIADB_USER: testuser
+      MARIADB_PASSWORD_FILE: /run/secrets/password
+
+    volumes:
+      - {{dir_path}}/db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  db:
+
+secrets:
+  password:
+    file: ./password.txt
+  root_password:
+    file: ./root_password.txt
