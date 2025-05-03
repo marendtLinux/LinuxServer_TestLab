@@ -12,7 +12,7 @@ I'm continuously expanding and refining this lab as part of my ongoing learning 
 - [**bash-scripting/**](./control_host/bash/)  
   - [Fail2Ban installer script](./control_host/bash/install_fail2ban/install_fail2ban.sh) for Debian-based systems  
   - [Fail2Ban deploy script](./control_host/bash/install_fail2ban/deploy_and-test_fail2ban.sh) – copies and runs the installer remotely  
-  - [Bash script template generator](./control_host/bash/utilities/create_bash_script.sh)
+  - [Bash script template generator](./control_host/bash/utilities/create_bashscript.sh)
 
 ### 🐳 Docker
 - [**docker/**](./container)  
