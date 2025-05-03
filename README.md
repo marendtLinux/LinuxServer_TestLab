@@ -23,7 +23,11 @@ I'm continuously expanding and refining this lab as part of my ongoing learning 
   - [Update playbook](./control_host/ansible/playbooks/update_packages.yml) for Debian- and RHEL-based distros  
   - [Fail2Ban install/configure playbook](./control_host/ansible/playbooks/fail2ban.yml) for both Debian and RHEL families
   - [MariaDB with docker compose, deployed with Ansible](./control_host/ansible/playbooks/mariadb/) 
-
+  
+### 🛡️ Firewall
+- [**firewall/**](./control_host/bash/firewall/)  
+  - [Basic iptables firewall script](./control_host/bash/firewall/iptables_config.sh) – A Bash script to configure a basic firewall with iptables  
+  
 ### 📘 Guides & Documentation
 - [**docs/**](./doc)  
   - [Set up MariaDB replication](./doc/db/mariaDB/setup_replication.md) – step-by-step instructions  
