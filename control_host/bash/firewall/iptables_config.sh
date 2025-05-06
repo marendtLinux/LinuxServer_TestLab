@@ -24,7 +24,7 @@ ICMP_ALLOWED_TYPES_IPV6=(1 2 3 4 128 129 130 131 132 134 135 136 141 142 143 148
 basic_config() {
 
 	#first two parameter is iptables-command
-	ipt_cmd="$1 $2"
+	local ipt_cmd="$1 $2"
 
 	#delete old rules
 	$ipt_cmd -F
