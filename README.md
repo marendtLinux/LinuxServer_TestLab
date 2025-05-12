@@ -39,5 +39,13 @@ I'm continuously expanding and refining this lab as part of my ongoing learning 
   - [Fail2Ban config files](./server/shared_config/etc/fail2ban/jail.d/customisation.local/)  
   - [MariaDB replication config](./server/server_specific/Server1/etc/mysql/my.cnf/)
 
+### 🧳 SecurePortActivator
+- 🔗 [**SecurePortOpener Repository**](https://github.com/marendtLinux/SecurePortActivator)  
+  - A security-focused project to control port access based on user login status on a remote Linux server  
+  - The goal: Only allow access to specific ports (e.g., 443, 3306 ) **after** a user has authenticated  
+  - Uses login hooks (e.g., `pam_exec`), firewall rules (`iptables` or `nftables`), and custom scripts  
+  - Potential use cases: secure ports for servers in developing stage, where the underlying application (e.g. apache) is not yet secure 
+  - 👉 This project is maintained in a **separate repository** for better modularity and version control.
+
 ---
 
