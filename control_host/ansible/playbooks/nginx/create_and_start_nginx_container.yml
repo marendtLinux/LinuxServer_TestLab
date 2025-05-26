@@ -1,0 +1,56 @@
+---
+- hosts: Server3Ubuntu
+
+  vars:
+    user: dockeradmin
+    dir_path: "~/{{user}}/nginx_container_files/"
+    dir_path_ssl: "{{dir_path}}ssl/"
+    nginx_conf_file: "nginx.conf"
+    private_key: "example.com.key"
+    certificate_signing_request: "www.example.com.csr"
+    x509_certificate: "www.example.com.crt"
+
+  tasks:
+    # create the directory for the docker volumes
+    - name: Create directory
+      ansible.builtin.file:
+        path: "{{dir_path_ssl}}"
+        state: directory
+        owner: "{{user}}"
+
+    - name: upload nginx configuration file
+      template:
+        src: "./{{nginx_conf_file}}"
+        dest: "{{dir_path}}/{{nginx_conf_file}}"
+        owner: "{{user}}"
+        group: "{{user}}"
+        mode: '0660'
+
+    - name: Generate an OpenSSL private key
+      community.crypto.openssl_privatekey:
+        path: "{{dir_path_ssl}}{{private_key}}"
+        size: 2048
+
+    - name: Generate an OpenSSL Certificate Signing Request (CSR)
+      community.crypto.openssl_csr:
+        path: "{{dir_path_ssl}}{{certificate_signing_request}}"
+        privatekey_path: "{{dir_path_ssl}}{{private_key}}"
+        common_name: www.example.com
+
+    - name: Generate a Self Signed OpenSSL certificate
+      community.crypto.x509_certificate:
+        path: "{{dir_path_ssl}}{{x509_certificate}}"
+        privatekey_path: "{{dir_path_ssl}}{{private_key}}"
+        csr_path: "{{dir_path_ssl}}{{certificate_signing_request}}"
+        provider: selfsigned
+
+    - name: upload compose.yml
+      template:
+        src: compose.yml
+        dest: "{{dir_path}}/compose.yml"
+        owner: "{{user}}"
+
+    - name: compose and start containers
+      community.docker.docker_compose_v2:
+        project_src: "{{dir_path}}"
+        state: present

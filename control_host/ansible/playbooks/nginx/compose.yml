@@ -1,0 +1,17 @@
+---
+# file compose.yaml
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-test
+
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+     
+     # dir_path is defined in the ansible-file: create_and_start_nginx_container.yml
+      - {{dir_path}}nginx.conf:/etc/nginx/nginx.conf:ro
+      - {{dir_path_ssl}}:/etc/nginx/ssl:ro
+    restart: no

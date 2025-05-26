@@ -23,6 +23,7 @@ I'm continuously expanding and refining this lab as part of my ongoing learning 
   - [Update playbook](./control_host/ansible/playbooks/update_packages.yml) for Debian- and RHEL-based distros  
   - [Fail2Ban install/configure playbook](./control_host/ansible/playbooks/fail2ban.yml) for both Debian and RHEL families
   - [MariaDB with docker compose, deployed with Ansible](./control_host/ansible/playbooks/mariadb/) 
+  - [Nginx with docker compose, using SSL with self-signed certificates, deployed with Ansible](./control_host/ansible/playbooks/nginx/) 
   
 ### 🛡️ Firewall
 - [**firewall/**](./control_host/bash/firewall/)  
