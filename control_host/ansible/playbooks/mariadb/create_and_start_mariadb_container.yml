@@ -14,7 +14,7 @@
 
   vars:
     user: dockeradmin
-    dir_path: "~{{user}}/docker_test_ansible"
+    dir_path: "/home/{{user}}/docker_test_ansible"
 
   tasks:
 
